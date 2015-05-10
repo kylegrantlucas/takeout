@@ -161,7 +161,7 @@ module Takeout
 
       raise Takeout::EndpointFailureError.new(curl, request_type) if @failure
 
-      return @parsed_body if @parsed_body
+      return @parsed_body
     end
 
 
