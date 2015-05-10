@@ -10,6 +10,10 @@ describe Takeout::Client do
                                                                                                  :put_posts, :put_fake_failure, :put_fake_missing, :put_fake_redirect,
                                                                                                  :delete_posts, :delete_fake_failure, :delete_fake_missing, :delete_fake_redirect])
     end
+
+    it 'yeilds when block is given' do
+      expect { |b| Takeout::Client.new(&b) }.to yield_with_args (Takeout::Client)
+    end
   end
 
   context 'ssl' do
