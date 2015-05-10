@@ -9,7 +9,7 @@ module Takeout
     # debug:: a boolean specifying whether or not to run curl with teh verbose setting
     attr_accessor :debug
 
-    # options:: a hash specifying the global options to apply to each request
+    # @return [Hash] a hash specifying the global options to apply to each request
     attr_accessor :options
 
     # headers:: a hash specifying the headers to apply to each request
