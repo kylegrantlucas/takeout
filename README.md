@@ -1,4 +1,6 @@
 # Takeout
+
+[![Join the chat at https://gitter.im/kylegrantlucas/takeout](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kylegrantlucas/takeout?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Gem Version](https://badge.fury.io/rb/takeout.svg)](http://badge.fury.io/rb/takeout) [![Code Climate](https://codeclimate.com/github/kylegrantlucas/takeout/badges/gpa.svg)](https://codeclimate.com/github/kylegrantlucas/takeout) [![Test Coverage](https://codeclimate.com/github/kylegrantlucas/takeout/badges/coverage.svg)](https://codeclimate.com/github/kylegrantlucas/takeout/coverage) [![Circle CI](https://circleci.com/gh/kylegrantlucas/takeout/tree/master.svg?style=shield)](https://circleci.com/gh/kylegrantlucas/takeout/tree/master) [![Inline docs](http://inch-ci.org/github/kylegrantlucas/takeout.svg?branch=master&style=shields)](http://inch-ci.org/github/kylegrantlucas/takeout)
 
 A powerful little tool for generating on-the-fly API clients.
