@@ -133,9 +133,8 @@ module Takeout
 
       # Convert keys to strings, encode values, clean up hash
       extracted_options = extracted_options.inject({}) do |memo,(key,value)|
-        memo[key.to_s] = ERB::Util.url_encode(value.to_s)
-        options.delete(key.to_sym)
-        memo
+        options.delete(key)
+        memo.merge({key.to_s => ERB::Util.url_encode(value)})
       end
 
       return extracted_options, options
