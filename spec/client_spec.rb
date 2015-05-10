@@ -38,6 +38,10 @@ describe Takeout::Client do
     it 'properly handles an object_id' do
       expect(client.send(:generate_request_url, :posts, :get, {object_id: 1}).first.to_s).to eq 'http://test.com/posts/1'
     end
+
+    it 'properly appends an extension' do
+      expect(client.send(:generate_request_url, :posts, :get, {extension: 'json'}).first.to_s).to eq 'http://test.com/posts.json'
+    end
   end
 
 

@@ -175,7 +175,7 @@ module Takeout
                     else
                       url(custom_schema)
                     end
-
+      
       # Append extension if one is given
       request_url = append_extension(request_url, options)
 
@@ -183,7 +183,8 @@ module Takeout
     end
 
     def append_extension(request_url, options)
-      return "#{request_url}.#{options[:extension] ? options[:extension] : self.extension}" if options[:extension] || self.extension
+      request_url = "#{request_url}.#{options[:extension] || self.extension}" if options[:extension] || self.extension
+      return request_url
     end
 
     def extract_instance_variables_from_options(options)
