@@ -15,12 +15,25 @@ module Takeout
     # uri:: the uri to send requests to
     attr_accessor :debug, :options, :headers, :extension, :ssl, :schemas, :uri
 
-    # endpoints:: the hash containing the enpoints by request type to generate methods for
+    # endpoints:: the hash containing the endpoints by request type to generate methods for
     attr_reader :endpoints
 
     # A constant specifying the kind of event callbacks to raise errors for
     FAILURES = [:failure, :missing, :redirect]
 
+    # The main client initialization method.
+    # # # ==== Attributes
+    #
+    # * +options+ - The main atrtibute and extra global options to set for the client
+    # ==== Options
+    #
+    # * +:uri+ - A string defining the URI for the API to call.
+    # * +:endpoints+ - A hash containing the endpoints by request type to generate methods for
+    # * +:headers+ - A hash specifying the headers to apply to each request
+    # * +:ssl+ - A boolean to specify whether or not SSL is turned on
+    # * +:schemas+ - A hash specifying the custom per-endpoint schema templates
+    # * +:extension+ - A string with the extension to be appended on each request
+    #
     def initialize(options={})
       if block_given?
         yield self
