@@ -22,7 +22,7 @@ module Takeout
     FAILURES = [:failure, :missing, :redirect]
 
     # The main client initialization method.
-    # # # ==== Attributes
+    # ==== Attributes
     #
     # * +options+ - The main atrtibute and extra global options to set for the client
     # ==== Options
@@ -33,7 +33,6 @@ module Takeout
     # * +:ssl+ - A boolean to specify whether or not SSL is turned on
     # * +:schemas+ - A hash specifying the custom per-endpoint schema templates
     # * +:extension+ - A string with the extension to be appended on each request
-    #
     def initialize(options={})
       if block_given?
         yield self
