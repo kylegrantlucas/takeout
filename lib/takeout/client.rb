@@ -157,14 +157,13 @@ module Takeout
     def perform_curl_request(request_type, request_url, options=nil, headers=nil)
       curl = Curl.send(request_type.to_sym, request_url.to_s, options) do |curl|
         curl.verbose = true if @debug
+        curl.headers = headers if headers
 
         if options[:basic_auth]
           curl.http_auth_types = :basic
           curl.username = options[:basic_auth][:username]
           curl.password = options[:basic_auth][:password]
         end
-
-        headers.each { |key, value| curl.headers[key.to_s] = value } if headers
 
         curl.on_success {|response| @parsed_body, @failure = Oj.load(response.body_str), false }
 
