@@ -68,7 +68,7 @@ You may do this in either the call or in teh client instantiation, however the c
     
 #### Templating
 
-Takeout includes support for specifying customs endpoint schemas using the (Liquid Templating Engine)[http://bs.com]:
+Takeout includes support for specifying customs endpoint schemas using the [Liquid Templating Engine](http://liquidmarkup.org):
     
 To define a schema do so in the instantiation of the client:
 
