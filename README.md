@@ -1,5 +1,5 @@
 # Takeout
-[![Code Climate](https://codeclimate.com/github/kylegrantlucas/takeout/badges/gpa.svg)](https://codeclimate.com/github/kylegrantlucas/takeout) [![Test Coverage](https://codeclimate.com/github/kylegrantlucas/takeout/badges/coverage.svg)](https://codeclimate.com/github/kylegrantlucas/takeout/coverage) [![Circle CI](https://circleci.com/gh/kylegrantlucas/takeout/tree/master.svg?style=shield)](https://circleci.com/gh/kylegrantlucas/takeout/tree/master) [![Inline docs](http://inch-ci.org/github/kylegrantlucas/takeout.svg?branch=master&style=shields)](http://inch-ci.org/github/kylegrantlucas/takeout)
+[![Gem Version](https://badge.fury.io/rb/takeout.svg)](http://badge.fury.io/rb/takeout) [![Code Climate](https://codeclimate.com/github/kylegrantlucas/takeout/badges/gpa.svg)](https://codeclimate.com/github/kylegrantlucas/takeout) [![Test Coverage](https://codeclimate.com/github/kylegrantlucas/takeout/badges/coverage.svg)](https://codeclimate.com/github/kylegrantlucas/takeout/coverage) [![Circle CI](https://circleci.com/gh/kylegrantlucas/takeout/tree/master.svg?style=shield)](https://circleci.com/gh/kylegrantlucas/takeout/tree/master) [![Inline docs](http://inch-ci.org/github/kylegrantlucas/takeout.svg?branch=master&style=shields)](http://inch-ci.org/github/kylegrantlucas/takeout)
 
 A powerful little tool for generating on-the-fly API clients.
 

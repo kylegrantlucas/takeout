@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Takeout::VERSION
   spec.authors       = ["Kyle Lucas"]
   spec.email         = ["kglucas93@gmail.com"]
-  spec.summary       = %q{A simple ruby library to autogenerate api clients.}
+  spec.summary       = %q{A powerful little tool for generating on-the-fly API clients.}
   spec.description   = %q{}
-  spec.homepage      = ""
+  spec.homepage      = "http://github.com/kyelgrantlucas/takeout"
   spec.license       = "MIT"
   spec.required_ruby_version = '>= 1.8.0'
 
