@@ -4,8 +4,12 @@ describe Takeout::Client do
   let (:client) {Takeout::Client.new(uri: 'test.com', endpoints: {get: ENDPOINTS, post: ENDPOINTS, put: ENDPOINTS, delete: ENDPOINTS})}
 
   context 'initialization' do
-    pending 'creates methods for all provided endpoints'
-    pending 'creates proper url'
+    it 'creates methods for all provided endpoints' do
+      expect((client.methods - Object.methods - Takeout::Client.instance_methods(false))).to eq([:get_posts, :get_fake_failure, :get_fake_missing, :get_fake_redirect,
+                                                                                                 :post_posts, :post_fake_failure, :post_fake_missing, :post_fake_redirect,
+                                                                                                 :put_posts, :put_fake_failure, :put_fake_missing, :put_fake_redirect,
+                                                                                                 :delete_posts, :delete_fake_failure, :delete_fake_missing, :delete_fake_redirect])
+    end
   end
 
   context 'ssl' do
@@ -31,7 +35,9 @@ describe Takeout::Client do
       expect(temp_client.send(:generate_request_url, :posts, :get, {test: 'STRING', auth_key: '111'}).last).to eq auth_key: '111'
     end
 
-    pending 'properly handles an object_id'
+    it 'properly handles an object_id' do
+      expect(client.send(:generate_request_url, :posts, :get, {object_id: 1}).first.to_s).to eq 'http://test.com/posts/1'
+    end
   end
 
 
