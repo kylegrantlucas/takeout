@@ -8,7 +8,7 @@ module Takeout
 
     # debug:: a boolean specifying whether or not to run curl with teh verbose setting
     attr_accessor :debug
-    
+
     # options:: a hash specifying the global options to apply to each request
     attr_accessor :options
 
@@ -70,15 +70,19 @@ module Takeout
       return @ssl
     end
 
+    # Sets the instance variable and then generates the dynamic methods by calling #generate_enpoint_methods
+    # @param [Hash] value A hash specifying the custom per-endpoint schema templates
     def endpoints=(value)
       generate_endpoint_methods(value)
       @endpoints = value
     end
 
+    # Flips the @ssl instance variable to true
     def enable_ssl
       @ssl=true
     end
 
+    # Flips the @ssl instance variable to false
     def disable_ssl
       @ssl=false
     end
