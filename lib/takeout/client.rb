@@ -148,10 +148,10 @@ module Takeout
         curl.verbose = true if @debug
         curl.headers = headers if headers
 
-        if options[:basic_auth]
+        if options[:username] && options[:password]
           curl.http_auth_types = :basic
-          curl.username = options[:basic_auth][:username]
-          curl.password = options[:basic_auth][:password]
+          curl.username = options[:username]
+          curl.password = options[:password]
         end
 
         curl.on_success {|response| @parsed_body, @failure = Oj.load(response.body_str), false }
