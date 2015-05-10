@@ -7,13 +7,25 @@ module Takeout
     require 'liquid'
 
     # debug:: a boolean specifying whether or not to run curl with teh verbose setting
+    attr_accessor :debug
+    
     # options:: a hash specifying the global options to apply to each request
+    attr_accessor :options
+
     # headers:: a hash specifying the headers to apply to each request
+    attr_accessor :headers
+
     # extension:: a string with the extension to be appended on each request
+    attr_accessor :extension
+
     # ssl:: a boolean to specify whether or not SSL is turned on
+    attr_accessor :ssl
+
     # schemas:: a hash specifying the custom per-endpoint schema templates
+    attr_accessor :schemas
+
     # uri:: the uri to send requests to
-    attr_accessor :debug, :options, :headers, :extension, :ssl, :schemas, :uri
+    attr_accessor :uri
 
     # endpoints:: the hash containing the endpoints by request type to generate methods for
     attr_reader :endpoints

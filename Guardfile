@@ -46,3 +46,9 @@ end
 guard 'rake', task: 'install', run_on_all: true, run_on_start: true do
   watch(%r{^lib/takeout/client.rb})
 end
+
+guard 'yard' do
+  watch(%r{app/.+\.rb})
+  watch(%r{lib/.+\.rb})
+  watch(%r{ext/.+\.c})
+end
