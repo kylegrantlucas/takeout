@@ -144,7 +144,7 @@ module Takeout
     end
 
     def perform_curl_request(request_type, request_url, options=nil, headers=nil)
-      curl = Curl.send(request_type.to_sym, request_url.to_s, options) do |curl|
+      curl = Curl.send(request_type, request_url.to_s, options) do |curl|
         curl.verbose = true if @debug
         curl.headers = headers if headers
 
@@ -177,9 +177,13 @@ module Takeout
                     end
 
       # Append extension if one is given
-      request_url = "#{request_url}.#{options[:extension] ? options[:extension] : self.extension}" if options[:extension] || self.extension
+      request_url = append_extension(request_url, options)
 
       return request_url, options
+    end
+
+    def append_extension(request_url, options)
+      return "#{request_url}.#{options[:extension] ? options[:extension] : self.extension}" if options[:extension] || self.extension
     end
 
     def extract_instance_variables_from_options(options)
