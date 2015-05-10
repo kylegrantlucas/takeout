@@ -28,5 +28,5 @@ dependencies:
       esac
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.1.0 bundle exec rspec ;; 1) rvm-exec 2.2.0-preview1 bundle exec rspec ;; 2) rvm-exec 1.8.7-p302 bundle exec rspec ;; 3) BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rspec ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.1.0 bundle exec rspec ;; 1) rvm-exec 2.2.0-preview1 bundle exec rspec ;; 2) rvm-exec 1.8.7-p302 bundle exec rspec ;; 3) BUNDLE_GEMFILE=Gemfile rvm-exec jruby bundle exec rspec ;; esac:
         parallel: true
