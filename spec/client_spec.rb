@@ -20,6 +20,11 @@ describe Takeout::Client do
     end
   end
 
+  context 'templating' do
+    pending 'properly substitutes template keys'
+    pending 'properly handsles an object_id'
+  end
+
 
   context 'headers' do
     pending 'submits headers'

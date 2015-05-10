@@ -26,4 +26,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "sinatra"
   spec.add_development_dependency "webmock"
+  spec.add_development_dependency "guard", "2.12.5"
+  spec.add_development_dependency "guard-rspec", '4.5.0'
+  spec.add_development_dependency "guard-bundler"
+  spec.add_development_dependency "guard-rake"
+  spec.add_development_dependency "terminal-notifier-guard"
 end
