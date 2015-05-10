@@ -1,5 +1,5 @@
 # Takeout
-[![Gem Version](https://badge.fury.io/rb/takeout@2x.png)](http://badge.fury.io/rb/takeout)
+[![Gem Version](https://badge.fury.io/rb/takeout.png)](http://badge.fury.io/rb/takeout)
 [![Code Climate](https://codeclimate.com/github/kylegrantlucas/takeout/badges/gpa.svg)](https://codeclimate.com/github/kylegrantlucas/takeout) 
 [![Test Coverage](https://codeclimate.com/github/kylegrantlucas/takeout/badges/coverage.svg)](https://codeclimate.com/github/kylegrantlucas/takeout/coverage) 
 [![Circle CI](https://circleci.com/gh/kylegrantlucas/takeout/tree/master.svg?style=shield)](https://circleci.com/gh/kylegrantlucas/takeout/tree/master) 
