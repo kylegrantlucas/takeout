@@ -63,7 +63,7 @@ Results are returned as parsed ruby objects:
 #### Extensions
 
 You have the ability to specify an extension that gets tacked on, if you need it.
-You may do this in either the call or in teh client instantiation, however the call will always override the clients extension if there is a confilct.
+You may do this in either the call or in the client instantiation, however the call will always override the clients extension if there is a conflict.
 
     client = Takeout::Client.new do |client|
       client.uri = 'testing.com'
@@ -97,7 +97,7 @@ As you can see in the above example I use ```{{endpoint}}``` as one of the templ
 
 #### SSL Support
 
-SSL is also supported, and it very easy to flip on.
+SSL is also supported, and is very easy to flip on.
 
 You can either specify ssl when instantiating the object:
 
