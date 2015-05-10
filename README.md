@@ -5,7 +5,7 @@ A powerful little tool for generating on-the-fly API clients.
 
 ## Requirements
 
-All versions of MRI 1.9.3+ and up are supported (and tested via CircleCI), currently un supported on JRuby, MRI 1.8-1.9.2, and Rubinus.
+All versions of MRI 1.9.3+ and up are supported (and tested via CircleCI), the gem is currently unsupported on JRuby, MRI 1.8-1.9.2, and Rubinus.
 Support of these platforms is a future goal for the project.
 
 ## Installation
