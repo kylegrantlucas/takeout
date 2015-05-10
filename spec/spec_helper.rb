@@ -99,5 +99,6 @@ RSpec.configure do |config|
 
   config.before(:each) do
     stub_request(:any, /test.com/).to_rack(FakeTestApi)
+    WebMock.disable!
   end
 end

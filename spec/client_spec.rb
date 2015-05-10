@@ -52,14 +52,17 @@ describe Takeout::Client do
 
   context 'get' do
     it 'returns array on success' do
+      WebMock.enable!
       expect(client.get_posts).to be_an(Array)
     end
 
     it 'raises EndpointFailureError on missing' do
+      WebMock.enable!
       expect{client.get_fake_missing}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:get, 'fake_missing'))
     end
 
     it 'raises EndpointFailureError on failure' do
+      WebMock.enable!
       expect{client.get_fake_failure}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:get, 'fake_failure'))
     end
     pending 'raises EndPointFailureError on redirect'
@@ -67,17 +70,21 @@ describe Takeout::Client do
 
   context 'post' do
     it 'returns hash on success' do
+      WebMock.enable!
       expect(client.post_posts).to be_an(Hash)
     end
 
     it 'raises EndpointFailureError when called without object_id' do
+      WebMock.enable!
       expect{client.post_posts(object_id: 1)}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:post, 'posts/1'))
     end
 
     it 'raises EndpointFailureError on missing' do
+      WebMock.enable!
       expect{client.post_fake_missing}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:post, 'fake_missing'))
     end
     it 'raises EndpointFailureError on failure' do
+      WebMock.enable!
       expect{client.post_fake_failure}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:post, 'fake_failure'))
     end
 
@@ -86,18 +93,22 @@ describe Takeout::Client do
 
   context 'delete' do
     it 'returns hash on success with object_id' do
+      WebMock.enable!
       expect(client.delete_posts(object_id: 1)).to be_a(Hash)
     end
 
     it 'raises EndpointFailureError when called without object_id' do
+      WebMock.enable!
       expect{client.delete_posts}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:delete, 'posts'))
     end
 
     it 'raises EndpointFailureError on missing' do
+      WebMock.enable!
       expect{client.delete_fake_missing}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:delete, 'fake_missing'))
     end
 
     it 'raises EndpointFailureError on failure' do
+      WebMock.enable!
       expect{client.delete_fake_failure}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:delete, 'fake_failure'))
     end
 
@@ -106,17 +117,21 @@ describe Takeout::Client do
 
   context 'put' do
     it 'returns hash on success with object_id' do
+      WebMock.enable!
       expect(client.put_posts(object_id: 1)).to be_a(Hash)
     end
 
     it 'raises EndpointFailureError when called without object_id' do
+      WebMock.enable!
       expect{client.put_posts}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:put, 'posts'))
     end
 
     it 'raises EndpointFailureError on missing' do
+      WebMock.enable!
       expect{client.put_fake_missing}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:put, 'fake_missing'))
     end
     it 'raises EndpointFailureError on failure' do
+      WebMock.enable!
       expect{client.put_fake_failure}.to raise_error(Takeout::EndpointFailureError, generate_error_message(:put, 'fake_failure'))
     end
     pending 'raises EndPointFailureError on redirect'
