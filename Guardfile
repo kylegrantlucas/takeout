@@ -40,9 +40,9 @@ guard :rspec, cmd: "bundle exec rspec" do
 end
 
 guard 'rake', task: 'build', run_on_all: true, run_on_start: true do
-  watch(%r{^lib/client.rb})
+  watch(%r{^lib/takeout/client.rb})
 end
 
 guard 'rake', task: 'install', run_on_all: true, run_on_start: true do
-  watch(%r{^lib/client.rb})
+  watch(%r{^lib/takeout/client.rb})
 end
