@@ -1,12 +1,4 @@
-machine:
-  environment:
-    RAILS_ENV: test
-
-
 dependencies:
-  cache_directories:
-    - '../.rvm/rubies'
-
   override:
     - >
       case $CIRCLE_NODE_INDEX in
@@ -23,7 +15,7 @@ dependencies:
          rvm-exec rbx-2.2.6 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
          ;;
       esac
-      
+
 test:
   override:
     - case $CIRCLE_NODE_INDEX in 0) rvm-exec 1.9.2-p0 bundle exec rspec ;; 1) rvm-exec 2.0.0-p0 bundle exec rspec ;; 2) rvm-exec 2.2.0 bundle exec rspec ;; 3) rvm-exec rbx-2.2.6 bundle exec rspec ;; esac:
