@@ -35,7 +35,7 @@ guard :rspec, cmd: "bundle exec rspec" do
   watch(rspec.spec_files)
 
   # Ruby files
-  watch(%r{^lib/(.+)\.rb$}) { |m| "spec/#{m.last}_spec.rb" }
+  watch(%r{^lib/takeout/(.+)\.rb$}) { |m| puts m; "spec/#{m.last}_spec.rb" }
   watch(%r{^lib/(.+)\.rb$}) { |m| "spec/lib/#{m.last}_spec.rb" }
 end
 
