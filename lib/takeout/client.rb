@@ -49,18 +49,7 @@ module Takeout
       if block_given?
         yield self
       else
-        # Set instance variables
-        @uri = options[:uri] ? options[:uri] : ''
-        self.endpoints = options[:endpoints] ? options[:endpoints] : {}
-        @headers = options[:headers] ? options[:headers] : {}
-        @debug = options[:debug] ? options[:debug] : false
-        @ssl = options[:ssl] ? options[:ssl] : false
-        @schemas = options[:schemas] ? options[:schemas] : {}
-        @extension =  options[:extension] ? options[:extension] : nil
-
-        # Clean instance variables out of options hash and set that as options instance variable
-        [:uri, :endpoints, :headers, :debug, :ssl, :schemas, :extension].each { |v| options.delete(v) }
-        @options = options
+        extract_instance_variables_from_options(options)
       end
     end
 
@@ -191,6 +180,21 @@ module Takeout
       request_url = "#{request_url}.#{options[:extension] ? options[:extension] : self.extension}" if options[:extension] || self.extension
 
       return request_url, options
+    end
+
+    def extract_instance_variables_from_options(options)
+      # Set instance variables
+      @uri = options[:uri] || ''
+      self.endpoints = options[:endpoints] || {}
+      @headers = options[:headers] || {}
+      @schemas = options[:schemas] || {}
+      @debug = options[:debug]
+      @ssl = options[:ssl]
+      @extension =  options[:extension]
+
+      # Clean instance variables out of options hash and set that as options instance variable
+      [:uri, :endpoints, :headers, :debug, :ssl, :schemas, :extension].each { |v| options.delete(v) }
+      @options = options
     end
 
     def url(endpoint=nil)
