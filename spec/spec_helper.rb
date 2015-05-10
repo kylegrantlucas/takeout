@@ -2,7 +2,7 @@ require 'bundler/setup'
 Bundler.setup
 require 'takeout'
 require 'webmock/rspec'
-WebMock.disable!
+WebMock.disable_net_connect!(:allow => "codeclimate.com")
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 Dir["./spec/support/**/*.rb"].sort.each { |f| require f}
@@ -99,6 +99,5 @@ RSpec.configure do |config|
 
   config.before(:each) do
     stub_request(:any, /test.com/).to_rack(FakeTestApi)
-    WebMock.disable!
   end
 end
