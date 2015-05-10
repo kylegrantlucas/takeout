@@ -6,8 +6,19 @@ module Takeout
     require 'erb'
     require 'liquid'
 
-    attr_accessor :debug, :options, :headers, :extension, :ssl, :schemas, :uri, :extension
+    # debug:: a boolean specifying whether or not to run curl with teh verbose setting
+    # options:: a hash specifying the global options to apply to each request
+    # headers:: a hash specifying the headers to apply to each request
+    # extension:: a string with the extension to be appended on each request
+    # ssl:: a boolean to specify whether or not SSL is turned on
+    # schemas:: a hash specifying the custom per-endpoint schema templates
+    # uri:: the uri to send requests to
+    attr_accessor :debug, :options, :headers, :extension, :ssl, :schemas, :uri
+
+    # endpoints:: the hash containing the enpoints by request type to generate methods for
     attr_reader :endpoints
+
+    # A constant specifying the kind of event callbacks to raise errors for
     FAILURES = [:failure, :missing, :redirect]
 
     def initialize(options={})
