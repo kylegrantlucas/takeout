@@ -1,5 +1,5 @@
 # Takeout
-
+[![Code Climate](https://codeclimate.com/github/kylegrantlucas/takeout/badges/gpa.svg)](https://codeclimate.com/github/kylegrantlucas/takeout)[![Circle CI](https://circleci.com/gh/kylegrantlucas/takeout/tree/master.svg?style=svg)](https://circleci.com/gh/kylegrantlucas/takeout/tree/master)
 
 A powerful little tool for generating on-the-fly API clients.
 
