@@ -5,7 +5,8 @@ A powerful little tool for generating on-the-fly API clients.
 
 ## Requirements
 
-All version of MRI 1.8 and up are supported, it probably work sunder other variations of ruby it just hasn't been tested on the,
+All versions of MRI 1.9.3+ and up are supported, currently un supported on JRuby, MRI 1.8-1.9.2, and Rubinus.
+Support of these platforms is a future goal for the project.
 
 ## Installation
 
