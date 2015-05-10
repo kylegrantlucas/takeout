@@ -100,7 +100,7 @@ module Takeout
             return perform_curl_request(request_type, request_url, options, headers)
           end
         end
-      end if endpoints.is_a? Hash
+      end
     end
 
     # Render out the template values and return the updated options hash
@@ -131,13 +131,11 @@ module Takeout
       extracted_options.merge!({object_id: options[:object_id]}) if options[:object_id]
       template.scan(/\{\{(\w+)\}\}/).flatten(1).each { |template_key| extracted_options.merge!(options.select {|key| key == template_key.to_sym }) }
 
-      # Convert keys to strings
-      extracted_options = extracted_options.inject({}){|memo,(k,v)| memo[k.to_s] = v; memo}
-
-      # Encode the template values and remove template values from original options hash
-      extracted_options.each do |key, value|
-        extracted_options[key] = ERB::Util.url_encode(value.to_s)
+      # Convert keys to strings, encode values, clean up hash
+      extracted_options = extracted_options.inject({}) do |memo,(key,value)|
+        memo[key.to_s] = ERB::Util.url_encode(value.to_s)
         options.delete(key.to_sym)
+        memo
       end
 
       return extracted_options, options
@@ -175,7 +173,7 @@ module Takeout
                     else
                       url(custom_schema)
                     end
-      
+
       # Append extension if one is given
       request_url = append_extension(request_url, options)
 
