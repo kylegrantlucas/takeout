@@ -13,20 +13,20 @@ dependencies:
     - >
       case $CIRCLE_NODE_INDEX in
        0)
-         rvm-exec 2.1.0 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
+         rvm-exec 1.9.2-p0 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
          ;;
        1)
-         rvm-exec 2.2.0 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
+         rvm-exec 2.0.0-p0 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
          ;;
        2)
-         rvm-exec 1.8.7-p302 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
+         rvm-exec 2.2.0 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
          ;;
        3)
-         rvm-exec jruby gem install bundler
-         rvm-exec jruby bash -c "bundle check --path=vendor/bundle --gemfile Gemfile || bundle install --path=vendor/bundle --gemfile Gemfile"
+         rvm-exec jruby-1.7.0 gem install bundler
+         rvm-exec jruby-1.7.0 bash -c "bundle check --path=vendor/bundle --gemfile Gemfile || bundle install --path=vendor/bundle --gemfile Gemfile"
          ;;
       esac
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.1.0 bundle exec rspec ;; 1) rvm-exec 2.2.0-preview1 bundle exec rspec ;; 2) rvm-exec 1.8.7-p302 bundle exec rspec ;; 3) BUNDLE_GEMFILE=Gemfile rvm-exec jruby-1.7.0 bundle exec rspec ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) rvm-exec 1.9.2-p0 bundle exec rspec ;; 1) rvm-exec 2.0.0-p0 bundle exec rspec ;; 2) rvm-exec 2.2.0 bundle exec rspec ;; 3) BUNDLE_GEMFILE=Gemfile rvm-exec jruby-1.7.0 bundle exec rspec ;; esac:
         parallel: true
