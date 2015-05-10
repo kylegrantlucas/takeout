@@ -21,8 +21,17 @@ describe Takeout::Client do
   end
 
   context 'templating' do
-    pending 'properly substitutes template keys'
-    pending 'properly handsles an object_id'
+    it 'properly substitutes template keys' do
+      temp_client = Takeout::Client.new(uri: 'test.com', endpoints: {get: ENDPOINTS}, schemas: {get: {posts: '/{{endpoint}}/{{test}}'}})
+      expect(temp_client.send(:generate_request_url, :posts, :get, {test: 'STRING'}).first.to_s).to eq 'http://test.com/posts/STRING'
+    end
+
+    it 'properly returns updated options hash' do
+      temp_client = Takeout::Client.new(uri: 'test.com', endpoints: {get: ENDPOINTS}, schemas: {get: {posts: '/{{endpoint}}/{{test}}'}})
+      expect(temp_client.send(:generate_request_url, :posts, :get, {test: 'STRING', auth_key: '111'}).last).to eq auth_key: '111'
+    end
+
+    pending 'properly handles an object_id'
   end
 
 
