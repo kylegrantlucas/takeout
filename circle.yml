@@ -1,3 +1,9 @@
+notify:
+  webhooks:
+    # A list of hook hashes, containing the url field
+    # gitter hook
+    - url: https://webhooks.gitter.im/e/482b7426af309c0a6099
+
 dependencies:
   override:
     - >
