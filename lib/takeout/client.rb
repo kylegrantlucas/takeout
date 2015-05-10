@@ -52,7 +52,7 @@ module Takeout
       endpoints.each do |request_type, endpoint_names|
         # Force any give values into an array and then iterate over that
         [endpoint_names].flatten(1).each do |request_name|
-          self.class.send(:define_method, "#{request_type}_#{request_name}".to_sym) do |options={}|
+          define_singleton_method("#{request_type}_#{request_name}".to_sym) do |options={}|
             # Extract values that we store separately from the options hash and then clean it up
             headers.merge!(options[:headers]) if options[:headers]
 
@@ -76,26 +76,33 @@ module Takeout
       endpoint_templates = @schemas.fetch(request_type, nil)
       template = endpoint_templates.fetch(endpoint, nil) if endpoint_templates
 
+      if template
+        extracted_options, options = extract_template_options(options.merge({endpoint: endpoint}), template)
+        # Render out the template
+        rendered_template = Liquid::Template.parse(template).render(extracted_options)
+      end
+
+      return rendered_template, options
+    end
+
+    def extract_template_options(options, template)
+      extracted_options = {}
+
       # Build new options hash for templating
-      extracted_options = {'endpoint' => endpoint}
-      extracted_options.merge!({'object_id' => options[:object_id]})
-      template.scan(/\{\{(\w+)\}\}/).flatten(1).each do |template_key|
-        extracted_options.merge!(options.select {|key| key == template_key.to_sym }) if options.has_key? template_key.to_sym
-      end if template
+      extracted_options.merge!({endpoint: options[:endpoint]}) if options[:object_id]
+      extracted_options.merge!({object_id: options[:object_id]}) if options[:object_id]
+      template.scan(/\{\{(\w+)\}\}/).flatten(1).each { |template_key| extracted_options.merge!(options.select {|key| key == template_key.to_sym }) }
 
       # Convert keys to strings
       extracted_options = extracted_options.inject({}){|memo,(k,v)| memo[k.to_s] = v; memo}
-      
+
       # Encode the template values and remove template values from original options hash
       extracted_options.each do |key, value|
         extracted_options[key] = ERB::Util.url_encode(value.to_s)
         options.delete(key.to_sym)
       end
 
-      # Render out the template
-      liquid_render = Liquid::Template.parse(template).render(extracted_options)
-
-      return liquid_render, options
+      return extracted_options, options
     end
 
     def perform_curl_request(request_type, request_url, options=nil, headers=nil)
@@ -122,19 +129,18 @@ module Takeout
 
 
     def generate_request_url(endpoint_name, request_type=nil, options=nil)
-      custom_schema, options = substitute_template_values(endpoint_name, request_type, options) if request_type && options && !schemas.empty?
+      # Generate custom templated path string and update options hash
+      custom_schema, options = substitute_template_values(endpoint_name, request_type, options) unless schemas.empty?
 
-      if options[:object_id]
-        request_url = (custom_schema && !custom_schema.empty?) ? url(custom_schema) : url("/#{endpoint_name.to_s}/#{options[:object_id]}")
-      else
-        request_url = (custom_schema && !custom_schema.empty?) ? url(custom_schema) : url("/#{endpoint_name.to_s}")
-      end
+      # Generate URL based on if the custom schema exists, and if there is a given object_id
+      request_url = if custom_schema.nil? || (custom_schema && custom_schema.empty?)
+                      (options[:object_id] ? url("/#{endpoint_name.to_s}/#{options[:object_id]}") : url("/#{endpoint_name.to_s}"))
+                    else
+                      url(custom_schema)
+                    end
 
-      if options[:extension]
-        request_url = "#{request_url}.#{options[:extension]}"
-      elsif self.extension
-        request_url = "#{request_url}.#{self.extension}"
-      end
+      # Append extension if one is given
+      request_url = "#{request_url}.#{options[:extension] ? options[:extension] : self.extension}" if options[:extension] || self.extension
 
       return request_url, options
     end
