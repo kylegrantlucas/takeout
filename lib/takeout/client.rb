@@ -29,6 +29,8 @@ module Takeout
       end
     end
 
+    # Check if SSL is enabled.
+    # @return [Boolean] Returns true if SSL is enabled, false if disabled
     def ssl?
       return @ssl
     end
@@ -48,6 +50,8 @@ module Takeout
 
     private
 
+    # Generates the dynamic (request_type)_(endpoint_name) methods that allow you to access your API.
+    # @param [Hash] endpoints A hash with the form {request_type: :endpoint_name} or {request_type: [:endpoint_name1, :endpoint_name_2]}
     def generate_endpoint_methods(endpoints)
       endpoints.each do |request_type, endpoint_names|
         # Force any give values into an array and then iterate over that
@@ -71,6 +75,12 @@ module Takeout
       end if endpoints.is_a? Hash
     end
 
+    # Render out the template values and return the updated options hash
+    # @param [String] endpoint
+    # @param [String] request_type
+    # @param [Hash] options
+    # @return [String] rendered_template
+    # @return [Hash] options
     def substitute_template_values(endpoint, request_type, options={})
       # Gets the proper template for the give CUSTOM_SCHEMA string for this endpoint and substitutes value for it based on give options
       endpoint_templates = @schemas.fetch(request_type, nil)
