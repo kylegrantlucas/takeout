@@ -168,10 +168,10 @@ module Takeout
 
       # Generate URL based on if the custom schema exists, and if there is a given object_id
       request_url = if custom_schema.nil? || (custom_schema && custom_schema.empty?)
-                      (options[:object_id] ? url("/#{endpoint_name.to_s}/#{options[:object_id]}") : url("/#{endpoint_name.to_s}"))
-                    else
-                      url(custom_schema)
-                    end
+        (options[:object_id] ? url("/#{endpoint_name.to_s}/#{options[:object_id]}") : url("/#{endpoint_name.to_s}"))
+      else
+        url(custom_schema)
+      end
 
       # Append extension if one is given
       request_url = append_extension(request_url, options)
@@ -201,6 +201,31 @@ module Takeout
 
     def url(endpoint=nil)
       ssl? ? URI::HTTPS.build(host: @uri, path: endpoint) : URI::HTTP.build(host: @uri, path: endpoint)
+    end
+
+    def method_missing(method_sym, *attributes, &block)
+      request_type = method_sym.to_s.scan(/^(?:get|post|put|delete|patch|update)/).first
+      request_name = method_sym.to_s.scan(/(?<=_{1}).*/).first
+      if (request_type && request_name)
+        self.define_singleton_method(method_sym) do |options={}, &block|
+          # Extract values that we store separately from the options hash and then clean it up
+          headers.merge!(options[:headers]) if options[:headers]
+
+          # Merge in global options
+          options.merge!(@options) if @options
+
+          # Build the request_url and update the options to remove templated values (if there are any)
+          request_url, options = generate_request_url(request_name, request_type, options)
+
+          # Clean up options hash before performing request
+          [:headers, :extension, :object_id].each { |value| options.delete(value)}
+
+          return perform_curl_request(request_type, request_url, options, headers)
+        end
+        self.send(method_sym, *attributes, &block)
+      else
+        super
+      end
     end
   end
 end
