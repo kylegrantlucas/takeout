@@ -30,6 +30,8 @@ module Takeout
     # @return [Hash] the hash containing the endpoints by request type to generate methods for
     attr_reader :endpoints
 
+    attr_accessor :port
+
     # A constant specifying the kind of event callbacks to raise errors for
     FAILURES = [:failure, :missing, :redirect]
 
@@ -57,6 +59,12 @@ module Takeout
     # @return [Boolean] Returns true if SSL is enabled, false if disabled
     def ssl?
       return @ssl
+    end
+
+    # Check if a port is specified.
+    # @return [Boolean] Returns true if a port is enabled, false if nil.
+    def port?
+      return !port.nil?
     end
 
     # Sets the instance variable and then generates the dynamic methods by calling #generate_enpoint_methods
@@ -200,7 +208,8 @@ module Takeout
     end
 
     def url(endpoint=nil)
-      ssl? ? URI::HTTPS.build(host: @uri, path: endpoint) : URI::HTTP.build(host: @uri, path: endpoint)
+      opts = port? ? {host: @uri, path: endpoint, port: port} : {host: @uri, path: endpoint}
+      ssl? ? URI::HTTPS.build(opts) : URI::HTTP.build(opts)
     end
   end
 end
