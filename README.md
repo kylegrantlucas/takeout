@@ -34,25 +34,20 @@ Or install it yourself as:
 
 The first step is to instantiate a client with the URI and given endpoints you would like the gem to create methods for:
 
-    client = Takeout::Client.new(uri: 'testing.com', endpoints: {get: [:test, :test2], post: :test2})
+    client = Takeout::Client.new(uri: 'testing.com')
 
 This can also be done using block format:
    
     client = Takeout::Client.new do |client|
       client.uri = 'testing.com'
-      client.endpoints = {get: [:test, :test2], post: :test2}
     end
     
 From here you can begin calling your api methods! They take on the form ```(request_type)_(endpoint_name)```
-So given the example instantiation our method list would look like:
+So our method list would look like:
 
     client.get_test
     client.get_test2
     client.post_test2
-    
-You can at anytime see a list of the methods available to you by running this:
-
-    (client.methods - Object.methods - Takeout::Client.instance_methods(false))
     
 Results are returned as parsed ruby objects:
 
@@ -67,7 +62,6 @@ You may do this in either the call or in the client instantiation, however the c
 
     client = Takeout::Client.new do |client|
       client.uri = 'testing.com'
-      client.endpoints = {get: [:test, :test2], post: :test2}
       client.extension = 'json'
     end
     
@@ -81,7 +75,6 @@ To define a schema do so in the instantiation of the client:
 
     client = Takeout::Client.new do |client|
       client.uri = 'testing.com'
-      client.endpoints = {get: [:test, :test2], post: :test2}
       client.schemas = {get: {test: '/{{endpoint}}{% if param %}/required-param-{{param}}{% endif %}'}
     end
     
@@ -101,7 +94,7 @@ SSL is also supported, and is very easy to flip on.
 
 You can either specify ssl when instantiating the object:
 
-    client = Takeout::Client.new(uri: 'testing.com', endpoints: {get: :test}, ssl: true)
+    client = Takeout::Client.new(uri: 'testing.com', ssl: true)
 
 Or you can flip it on once already created:
 
@@ -117,7 +110,6 @@ Takeout also feature full support for headers:
 
     client = Takeout::Client.new do |client|
       client.uri = 'testing.com'
-      client.endpoints = {get: [:test, :test2], post: :test2}
       client.headers = {auth_token: 'asdjhdskjfh23423423'}
     end
 
@@ -132,7 +124,6 @@ Unlike most other features these are simply passed as options to the call:
 
     client = Takeout::Client.new do |client|
       client.uri = 'testing.com'
-      client.endpoints = {get: [:test, :test2], post: :test2}
       client.options = {username: 'user', password: 'pass'}
     end
     
