@@ -31,7 +31,7 @@ module Takeout
     attr_reader :endpoints
 
     # A constant specifying the kind of event callbacks to raise errors for
-    FAILURES = [:failure, :missing, :redirect]
+    FAILURES = [:failure, :missing]
 
     # The main client initialization method.
     # ==== Attributes
@@ -151,12 +151,13 @@ module Takeout
           curl.password = options[:password]
         end
 
-        curl.on_success {|response| @parsed_body, @failure = Oj.load(response.body_str), false }
+        curl.on_success {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, status_code: response.status, body: Oj.load(response.body_str)), false}
+        curl.on_redirect {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, status_code: response.status, body: Oj.load(response.body_str)), false}
 
-        FAILURES.each { |failure_type| curl.send("on_#{failure_type}") {@failure=true} }
+        FAILURES.each { |failure_type| curl.send("on_#{failure_type}") {@parsed_body, @failure = Takeout::Response.new(headers: response.headers, status_code: response.status, body: Oj.load(response.body_str)), true}}
       end
 
-      raise Takeout::EndpointFailureError.new(curl, request_type) if @failure
+      raise Takeout::EndpointFailureError.new(curl, request_type, @parsed_body) if @failure
 
       return @parsed_body
     end
