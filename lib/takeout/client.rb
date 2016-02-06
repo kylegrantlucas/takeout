@@ -27,9 +27,6 @@ module Takeout
     # @return [String] the uri to send requests to
     attr_accessor :uri
 
-    # @return [Hash] the hash containing the endpoints by request type to generate methods for
-    attr_reader :endpoints
-
     # A constant specifying the kind of event callbacks to raise errors for
     FAILURES = [:failure, :missing]
 
@@ -40,7 +37,6 @@ module Takeout
     # ==== Options
     #
     # * +:uri+ - A string defining the URI for the API to call.
-    # * +:endpoints+ - A hash containing the endpoints by request type to generate methods for
     # * +:headers+ - A hash specifying the headers to apply to each request
     # * +:ssl+ - A boolean to specify whether or not SSL is turned on
     # * +:schemas+ - A hash specifying the custom per-endpoint schema templates
@@ -59,13 +55,6 @@ module Takeout
       return @ssl
     end
 
-    # Sets the instance variable and then generates the dynamic methods by calling #generate_enpoint_methods
-    # @param [Hash] value A hash specifying the custom per-endpoint schema templates
-    def endpoints=(value)
-      generate_endpoint_methods(value)
-      @endpoints = value
-    end
-
     # Flips the @ssl instance variable to true
     def enable_ssl
       @ssl=true
@@ -77,31 +66,6 @@ module Takeout
     end
 
     private
-
-    # Generates the dynamic (request_type)_(endpoint_name) methods that allow you to access your API.
-    # @param [Hash] endpoints A hash with the form {request_type: :endpoint_name} or {request_type: [:endpoint_name1, :endpoint_name_2]}
-    def generate_endpoint_methods(endpoints)
-      endpoints.each do |request_type, endpoint_names|
-        # Force any give values into an array and then iterate over that
-        [endpoint_names].flatten(1).each do |request_name|
-          define_singleton_method("#{request_type}_#{request_name}".to_sym) do |options={}|
-            # Extract values that we store separately from the options hash and then clean it up
-            headers.merge!(options[:headers]) if options[:headers]
-
-            # Merge in global options
-            options.merge!(@options) if @options
-
-            # Build the request_url and update the options to remove templated values (if there are any)
-            request_url, options = generate_request_url(request_name, request_type, options)
-
-            # Clean up options hash before performing request
-            [:headers, :extension, :object_id].each { |value| options.delete(value)}
-
-            return perform_curl_request(request_type, request_url, options, headers)
-          end
-        end
-      end
-    end
 
     # Render out the template values and return the updated options hash
     # @param [String] endpoint
@@ -151,10 +115,10 @@ module Takeout
           curl.password = options[:password]
         end
 
-        curl.on_success {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, status_code: response.status, body: Oj.load(response.body_str)), false}
-        curl.on_redirect {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, status_code: response.status, body: Oj.load(response.body_str)), false}
+        curl.on_success {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, body: Oj.load(response.body_str), response: response), false}
+        curl.on_redirect {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, body: Oj.load(response.body_str), response: response), false}
 
-        FAILURES.each { |failure_type| curl.send("on_#{failure_type}") {@parsed_body, @failure = Takeout::Response.new(headers: response.headers, status_code: response.status, body: Oj.load(response.body_str)), true}}
+        FAILURES.each { |failure_type| curl.send("on_#{failure_type}") {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, body: Oj.load(response.body_str), response: response), true} }
       end
 
       raise Takeout::EndpointFailureError.new(curl, request_type, @parsed_body) if @failure
@@ -188,7 +152,6 @@ module Takeout
     def extract_instance_variables_from_options(options)
       # Set instance variables
       @uri = options[:uri] || ''
-      self.endpoints = options[:endpoints] || {}
       @headers = options[:headers] || {}
       @schemas = options[:schemas] || {}
       @debug = options[:debug]

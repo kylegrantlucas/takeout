@@ -4,14 +4,7 @@ describe Takeout::Client do
   let (:client) {Takeout::Client.new(uri: 'test.com', endpoints: {get: ENDPOINTS, post: ENDPOINTS, put: ENDPOINTS, delete: ENDPOINTS})}
 
   context 'initialization' do
-    it 'creates methods for all provided endpoints' do
-      expect((client.methods - Object.methods - Takeout::Client.instance_methods(false))).to eq([:get_posts, :get_fake_failure, :get_fake_missing, :get_fake_redirect,
-                                                                                                 :post_posts, :post_fake_failure, :post_fake_missing, :post_fake_redirect,
-                                                                                                 :put_posts, :put_fake_failure, :put_fake_missing, :put_fake_redirect,
-                                                                                                 :delete_posts, :delete_fake_failure, :delete_fake_missing, :delete_fake_redirect])
-    end
-
-    it 'yeilds when block is given' do
+    it 'yields when block is given' do
       expect { |b| Takeout::Client.new(&b) }.to yield_with_args (Takeout::Client)
     end
   end
@@ -59,8 +52,12 @@ describe Takeout::Client do
   end
 
   context 'get' do
-    it 'returns array on success' do
-      expect(client.get_posts).to be_an(Array)
+    it 'returns Takeout::Response on success' do
+      expect(client.get_posts).to be_an(Takeout::Response)
+    end
+
+    it 'returns an array in its body on success' do
+      expect(client.get_posts.body).to be_an(Array)
     end
 
     it 'raises EndpointFailureError on missing' do
@@ -74,8 +71,12 @@ describe Takeout::Client do
   end
 
   context 'post' do
-    it 'returns hash on success' do
-      expect(client.post_posts).to be_an(Hash)
+    it 'returns Takeout::Response on success' do
+      expect(client.post_posts).to be_an(Takeout::Response)
+    end
+
+    it 'returns as hash in its body on success' do
+      expect(client.post_posts.body).to be_an(Hash)
     end
 
     it 'raises EndpointFailureError when called without object_id' do
@@ -93,8 +94,12 @@ describe Takeout::Client do
   end
 
   context 'delete' do
-    it 'returns hash on success with object_id' do
-      expect(client.delete_posts(object_id: 1)).to be_a(Hash)
+    it 'returns Takeout::Response on success' do
+      expect(client.delete_posts(object_id: 1)).to be_a(Takeout::Response)
+    end
+
+    it 'returns hash in its body on success with object_id' do
+      expect(client.delete_posts(object_id: 1).body).to be_a(Hash)
     end
 
     it 'raises EndpointFailureError when called without object_id' do
@@ -113,8 +118,12 @@ describe Takeout::Client do
   end
 
   context 'put' do
-    it 'returns hash on success with object_id' do
-      expect(client.put_posts(object_id: 1)).to be_a(Hash)
+    it 'returns Takeout::Response on success' do
+      expect(client.put_posts(object_id: 1)).to be_a(Takeout::Response)
+    end
+
+    it 'returns hash in its body on success with object_id' do
+      expect(client.put_posts(object_id: 1).body).to be_a(Hash)
     end
 
     it 'raises EndpointFailureError when called without object_id' do
