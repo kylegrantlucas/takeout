@@ -123,10 +123,10 @@ module Takeout
           curl.password = options[:password]
         end
 
-        curl.on_success {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, body: Oj.load(response.body_str), response: response), false}
-        curl.on_redirect {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, body: Oj.load(response.body_str), response: response), false}
+        curl.on_success {|response| @parsed_body, @failure = Takeout::Response.new(headers: parse_response_headers(response.head), body: Oj.load(response.body_str), response: response), false}
+        curl.on_redirect {|response| @parsed_body, @failure = Takeout::Response.new(headers: parse_response_headers(response.head), body: Oj.load(response.body_str), response: response), false}
 
-        FAILURES.each { |failure_type| curl.send("on_#{failure_type}") {|response| @parsed_body, @failure = Takeout::Response.new(headers: response.headers, body: Oj.load(response.body_str), response: response), true} }
+        FAILURES.each { |failure_type| curl.send("on_#{failure_type}") {|response| @parsed_body, @failure = Takeout::Response.new(headers: parse_response_headers(response.head), body: Oj.load(response.body_str), response: response), true} }
       end
 
       raise Takeout::EndpointFailureError.new(curl, request_type, @parsed_body) if @failure
@@ -174,6 +174,10 @@ module Takeout
     def url(endpoint=nil)
       opts = port? ? {host: @uri, path: endpoint, port: port} : {host: @uri, path: endpoint}
       ssl? ? URI::HTTPS.build(opts) : URI::HTTP.build(opts)
+    end
+
+    def parse_response_headers(header_string)
+      header_string.split("\r\n")[1..-1].map {|x| {x.split(': ')[0].to_sym => x.split(': ')[1]} }.reduce({}, :update)
     end
 
     def method_missing(method_sym, *attributes, &block)
