@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["kglucas93@gmail.com"]
   spec.summary       = %q{A powerful little tool for generating on-the-fly API clients.}
   spec.description   = %q{}
-  spec.homepage      = "http://github.com/kyelgrantlucas/takeout"
+  spec.homepage      = "http://github.com/kylegrantlucas/takeout"
   spec.license       = "MIT"
   spec.required_ruby_version = '>= 1.9.3'
 
