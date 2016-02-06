@@ -1,9 +1,9 @@
 module Takeout
   class EndpointFailureError < StandardError
-    attr_reader :object, :request_type, :request_url, :response_code
+    attr_reader :object, :request_type, :request_url, :response_code, :response
 
-    def initialize(object, request_type)
-      @object, @request_type = object, request_type
+    def initialize(object, request_type, response)
+      @object, @request_type, @response = object, request_type, response
     end
 
     def message
