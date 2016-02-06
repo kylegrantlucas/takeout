@@ -191,7 +191,7 @@ module Takeout
           request_url, options = generate_request_url(request_name, request_type, options)
 
           # Clean up options hash before performing request
-          [:headers, :extension, :object_id].each { |value| options.delete(value)}
+          [:headers, :extension, :object_id, :endpoint].each { |value| options.delete(value)}
 
           return perform_curl_request(request_type, request_url, options, headers)
         end
