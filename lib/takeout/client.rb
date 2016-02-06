@@ -83,8 +83,8 @@ module Takeout
     # @return [Hash] options
     def substitute_template_values(endpoint, request_type, options={})
       # Gets the proper template for the give CUSTOM_SCHEMA string for this endpoint and substitutes value for it based on give options
-      endpoint_templates = @schemas.fetch(request_type, nil)
-      template = endpoint_templates.fetch(endpoint, nil) if endpoint_templates
+      endpoint_templates = @schemas.fetch(request_type.to_sym, nil)
+      template = endpoint_templates.fetch(endpoint.to_sym, nil) if endpoint_templates
 
       if template
         extracted_options, options = extract_template_options(options.merge({endpoint: endpoint}), template)
