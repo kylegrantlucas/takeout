@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in takeout.gemspec
 gemspec
 
+gem "curb", "~> 0.8.8"
+
 group :development do
   gem "guard", "2.12.5", require: false
   gem "guard-rspec", '4.5.0', require: false
