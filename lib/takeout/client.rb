@@ -29,8 +29,8 @@ module Takeout
 
     attr_accessor :port
 
-    # A constant specifying the kind of event callbacks to raise errors for
-    FAILURES = [:failure, :missing]
+    # A constant specifying the kind of event callbacks and if they should or should not raise an error
+    CALLBACKS = {failure: true, missing: true, redirect: false, success: false}
 
     # The main client initialization method.
     # ==== Attributes
@@ -123,10 +123,7 @@ module Takeout
           curl.password = options[:password]
         end
 
-        curl.on_success {|response| @parsed_body, @failure = Takeout::Response.new(headers: parse_response_headers(response.head), body: Oj.load(response.body_str), response: response), false}
-        curl.on_redirect {|response| @parsed_body, @failure = Takeout::Response.new(headers: parse_response_headers(response.head), body: Oj.load(response.body_str), response: response), false}
-
-        FAILURES.each { |failure_type| curl.send("on_#{failure_type}") {|response| @parsed_body, @failure = Takeout::Response.new(headers: parse_response_headers(response.head), body: Oj.load(response.body_str), response: response), true} }
+        CALLBACKS.each { |callback_type,failure| curl.send("on_#{callback_type}") {|response| @parsed_body, @failure = Takeout::Response.new(headers: parse_response_headers(response.head), body: Oj.load(response.body_str), response: response), failure} }
       end
 
       raise Takeout::EndpointFailureError.new(curl, request_type, @parsed_body) if @failure
@@ -199,6 +196,7 @@ module Takeout
 
           return perform_curl_request(request_type, request_url, options, headers)
         end
+
         self.send(method_sym, *attributes, &block)
       else
         super
