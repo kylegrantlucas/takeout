@@ -13,3 +13,4 @@ group :development do
   gem "terminal-notifier-guard", require: false
   gem 'guard-yard', require: false
 end
+gem "rack", ">= 1.6.2"
