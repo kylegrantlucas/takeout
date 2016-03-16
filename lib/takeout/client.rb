@@ -28,6 +28,8 @@ module Takeout
     attr_accessor :uri
 
     attr_accessor :port
+    
+    attr_accessor :endpoint_prefix
 
     # A constant specifying the kind of event callbacks and if they should or should not raise an error
     CALLBACKS = {failure: true, missing: true, redirect: false, success: false}
@@ -138,14 +140,14 @@ module Takeout
 
       # Generate URL based on if the custom schema exists, and if there is a given object_id
       request_url = if custom_schema.nil? || (custom_schema && custom_schema.empty?)
-        (options[:object_id] ? url("/#{endpoint_name.to_s}/#{options[:object_id]}") : url("/#{endpoint_name.to_s}"))
+        (options[:object_id] ? url("#{@endpoint_prefix}/#{endpoint_name.to_s}/#{options[:object_id]}") : url("#{@endpoint_prefix}/#{endpoint_name.to_s}"))
       else
         url(custom_schema)
       end
 
       # Append extension if one is given
       request_url = append_extension(request_url, options)
-
+      puts request_url
       return request_url, options
     end
 
@@ -162,14 +164,16 @@ module Takeout
       @debug = options[:debug]
       @ssl = options[:ssl]
       @extension =  options[:extension]
+      @endpoint_prefix = options[:endpoint_prefix]
+      @port = options[:port]
 
       # Clean instance variables out of options hash and set that as options instance variable
-      [:uri, :endpoints, :headers, :debug, :ssl, :schemas, :extension].each { |v| options.delete(v) }
+      [:uri, :endpoints, :headers, :debug, :ssl, :schemas, :extension, :endpoint_prefix, :port].each { |v| options.delete(v) }
       @options = options
     end
 
     def url(endpoint=nil)
-      opts = port? ? {host: @uri, path: endpoint, port: port} : {host: @uri, path: endpoint}
+      opts = port? ? {host: @uri, path: endpoint, port: @port} : {host: @uri, path: endpoint}
       ssl? ? URI::HTTPS.build(opts) : URI::HTTP.build(opts)
     end
 
