@@ -1,4 +1,4 @@
-require 'takout/core/ext/nil_class'
+require 'takeout/core/ext/nil_class'
 module Takeout
   class Client
     require 'curb'
