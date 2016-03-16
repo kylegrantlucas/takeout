@@ -147,7 +147,7 @@ module Takeout
 
       # Append extension if one is given
       request_url = append_extension(request_url, options)
-      puts request_url
+      
       return request_url, options
     end
 
