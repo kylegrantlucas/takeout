@@ -6,6 +6,7 @@ module Takeout
     require 'uri'
     require 'erb'
     require 'liquid'
+    require 'active_support/core_ext/hash'
 
     # @return [Boolean] a boolean specifying whether or not to run curl with teh verbose setting
     attr_accessor :debug
@@ -34,6 +35,8 @@ module Takeout
 
     # A constant specifying the kind of event callbacks and if they should or should not raise an error
     CALLBACKS = {failure: true, missing: true}
+    
+    JSON_REQUEST_BODY = [:put, :post]
 
     # The main client initialization method.
     # ==== Attributes
@@ -116,7 +119,8 @@ module Takeout
     end
 
     def perform_curl_request(request_type, request_url, options=nil, headers=nil)
-      curl = Curl.send(request_type, request_url.to_s, options) do |curl|
+      body = JSON_REQUEST_BODY.include?(request_type.to_sym) ? Oj.dump(options.deep_stringify_keys!) : options
+      curl = Curl.send(request_type, request_url.to_s, body) do |curl|
         curl.verbose = true if @debug
         curl.headers = headers if headers
 
