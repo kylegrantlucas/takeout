@@ -7,7 +7,7 @@
 [![Join the chat at https://gitter.im/kylegrantlucas/takeout](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kylegrantlucas/takeout?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Analytics](https://ga-beacon.appspot.com/UA-62799576-1/kylegrantlucas/takeout?pixel)](https://github.com/igrigorik/ga-beacon)
 
-A powerful little tool for generating on-the-fly API clients.
+A powerful little tool for generating on-the-fly API clients. 🍲
 
 ## Requirements
 
