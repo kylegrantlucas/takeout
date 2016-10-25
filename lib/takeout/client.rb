@@ -30,12 +30,12 @@ module Takeout
     attr_accessor :uri
 
     attr_accessor :port
-    
+
     attr_accessor :endpoint_prefix
 
     # A constant specifying the kind of event callbacks and if they should or should not raise an error
     CALLBACKS = {failure: true, missing: true}
-    
+
     JSON_REQUEST_BODY = [:put, :post]
 
     # The main client initialization method.
@@ -123,6 +123,7 @@ module Takeout
       curl = Curl.send(request_type, request_url.to_s, body) do |curl|
         curl.verbose = true if @debug
         curl.headers = headers if headers
+        curl.follow_location = true if options[:follow_redirect]
 
         if options[:username] && options[:password]
           curl.http_auth_types = :basic
@@ -152,7 +153,7 @@ module Takeout
 
       # Append extension if one is given
       request_url = append_extension(request_url, options)
-      
+
       return request_url, options
     end
 
