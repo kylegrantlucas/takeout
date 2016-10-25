@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "oj"
   spec.add_runtime_dependency "curb", "~> 0.8.8"
   spec.add_runtime_dependency "liquid"
-  spec.add_runtime_dependency "activesupport"
+  spec.add_runtime_dependency "activesupport", "4.2.0"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "sinatra"
   spec.add_development_dependency "webmock"
